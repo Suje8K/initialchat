@@ -6,6 +6,7 @@ import numpy as np
 import my_txtutils
 from flask import Flask
 from flask import request
+import json
 
 app = Flask(__name__)
 
@@ -21,6 +22,7 @@ author = pythonB10
 def processingContext():
     queryText = request.args.get('txt')
     respAmt = int(request.args.get('rspAmt'))
+    prm = request.args.get('json')
     queryText = queryText + "*"
     with Session() as sess:
         new_saver = train.import_meta_graph('checkpoints/rnn_train_1506774504-12000000.meta')
@@ -38,7 +40,12 @@ def processingContext():
                 break
             c = my_txtutils.convert_from_alphabet(ord(queryText[jj+1]))
             y = np.array([[c]])
-        return '<br>'.join(processingResponses(h, y, respAmt, sess, queryText[0]))
+        if(str(prm) == 'json'):
+            return json.dumps({"responses":processingResponses(h, y, respAmt, sess, queryText[0])})
+        elif(str(prm) == 'jsonPP'):
+            return json.dumps({"responses":processingResponses(h, y, respAmt, sess, queryText[0])}, indent=4)
+        else:
+            return '<br>'.join(processingResponses(h, y, respAmt, sess, queryText[0]))
 
 def processingResponses(h, y, respAmt, sess, userFirstChar):
     rsps = []
