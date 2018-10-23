@@ -24,10 +24,10 @@ author = pythonB10
 @app.route('/')
 def processingContext():
     queryText = request.args.get('txt')
-	if(str(queryText).startswith('A')):
-		queryText = A + queryText[1:]
-	else
-		queryText = B + queryText[1:]
+    if(str(queryText).startswith('A')):
+	    queryText = A + queryText[1:]
+    else:
+        queryText = B + queryText[1:]
     respAmt = int(request.args.get('rspAmt'))
     prm = request.args.get('json')
     queryText = queryText + "*"
@@ -60,12 +60,12 @@ def processingResponses(h, y, respAmt, sess, userFirstChar):
         ignoreResp, hh, yy = computeNextSeq(h, y, "*", sess, userFirstChar)
         currResp, _, _ = computeNextSeq(hh, yy, "-", sess, userFirstChar)
         #print("".join(ignoreResp))
-		tmp = "".join(currResp)
-		tst = ''
-		if(tmp.startswith('S')):
-			tst = 'A' + tmp[len(A):]
-		else:
-			tst = 'A' + tmp[len(A):]
+        tmp = "".join(currResp)
+        tst = ''
+        if(tmp.startswith('S')):
+            tst = 'A' + tmp[len(A):]
+        else:
+            tst = 'A' + tmp[len(A):]
         rsps.append(tst)
     return rsps
 
