@@ -15,12 +15,19 @@ ALPHASIZE = my_txtutils.ALPHASIZE
 NLAYERS = 3
 INTERNALSIZE = 512
 
+A = 'Sujeet Kumar Roy Polaris';
+B = 'Neha Jaiswal';
+
 pythonB10 = "checkpoints/rnn_train_1506774504-12000000"  # can even recite the Apache license
 author = pythonB10
 
 @app.route('/')
 def processingContext():
     queryText = request.args.get('txt')
+	if(str(queryText).startswith('A')):
+		queryText = A + queryText[1:]
+	else
+		queryText = B + queryText[1:]
     respAmt = int(request.args.get('rspAmt'))
     prm = request.args.get('json')
     queryText = queryText + "*"
@@ -53,7 +60,13 @@ def processingResponses(h, y, respAmt, sess, userFirstChar):
         ignoreResp, hh, yy = computeNextSeq(h, y, "*", sess, userFirstChar)
         currResp, _, _ = computeNextSeq(hh, yy, "-", sess, userFirstChar)
         #print("".join(ignoreResp))
-        rsps.append("".join(currResp))
+		tmp = "".join(currResp)
+		tst = ''
+		if(tmp.startswith('S')):
+			tst = 'A' + tmp[len(A):]
+		else:
+			tst = 'A' + tmp[len(A):]
+        rsps.append(tst)
     return rsps
 
 def computeNextSeq(h, y, c, sess, userFirstChar):
@@ -79,8 +92,5 @@ def computeNextSeq(h, y, c, sess, userFirstChar):
 
 
 if __name__ == '__main__':
-    user1 = 'Sujeet Kumar Roy Polaris: ';
-    user2 = 'Neha Jaiswal: ';
-    action = "kha lo";
     #processingContext(user2 + action, 10)
     app.run(debug=True)
