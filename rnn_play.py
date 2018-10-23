@@ -4,11 +4,11 @@
 from tensorflow import Session, train
 import numpy as np
 import my_txtutils
-from flask import Flask
-from flask import request
+#from flask import Flask
+#from flask import request
 import json
 
-app = Flask(__name__)
+#app = Flask(__name__)
 
 # these must match what was saved !
 ALPHASIZE = my_txtutils.ALPHASIZE
@@ -21,7 +21,7 @@ B = 'Neha Jaiswal';
 pythonB10 = "checkpoints/rnn_train_1506774504-12000000"  # can even recite the Apache license
 author = pythonB10
 
-@app.route('/')
+#@app.route('/')
 def processingContext():
     queryText = request.args.get('txt')
     if(str(queryText).startswith('A')):
@@ -60,12 +60,12 @@ def processingResponses(h, y, respAmt, sess, userFirstChar):
         ignoreResp, hh, yy = computeNextSeq(h, y, "*", sess, userFirstChar)
         currResp, _, _ = computeNextSeq(hh, yy, "-", sess, userFirstChar)
         #print("".join(ignoreResp))
-        tmp = "".join(currResp)
+        tmp = str("".join(currResp))
         tst = ''
         if(tmp.startswith('S')):
-            tst = 'A' + tmp[len(A):]
+            tst = A + tmp[len(A):]
         else:
-            tst = 'A' + tmp[len(A):]
+            tst = B + tmp[len(A):]
         rsps.append(tst)
     return rsps
 
@@ -92,5 +92,5 @@ def computeNextSeq(h, y, c, sess, userFirstChar):
 
 
 if __name__ == '__main__':
-    #processingContext(user2 + action, 10)
-    app.run(debug=True)
+    processingContext(user2 + action, 10)
+    #app.run(debug=True)
