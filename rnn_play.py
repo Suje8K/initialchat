@@ -61,12 +61,7 @@ def processingResponses(h, y, respAmt, sess, userFirstChar):
         currResp, _, _ = computeNextSeq(hh, yy, "-", sess, userFirstChar)
         #print("".join(ignoreResp))
         tmp = str("".join(currResp))
-        tst = ''
-        if(tmp.startswith('S')):
-            tst = A + tmp[len(A):]
-        else:
-            tst = B + tmp[len(A):]
-        rsps.append(tst)
+        rsps.append(tmp)
     return rsps
 
 def computeNextSeq(h, y, c, sess, userFirstChar):
