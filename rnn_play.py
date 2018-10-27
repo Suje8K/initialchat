@@ -15,10 +15,10 @@ ALPHASIZE = my_txtutils.ALPHASIZE
 NLAYERS = 3
 INTERNALSIZE = 512
 
-A = 'Sujeet Kumar Roy Polaris';
-B = 'Neha Jaiswal';
+A = '+';
+B = '-';
 
-pythonB10 = "checkpoints/rnn_train_1506774504-12000000"  # can even recite the Apache license
+pythonB10 = "checkpoints/rnn_train_1540643021-69000000"  # can even recite the Apache license
 author = pythonB10
 
 @app.route('/')
@@ -32,7 +32,7 @@ def processingContext():
     prm = request.args.get('json')
     queryText = queryText + "*"
     with Session() as sess:
-        new_saver = train.import_meta_graph('checkpoints/rnn_train_1506774504-12000000.meta')
+        new_saver = train.import_meta_graph('checkpoints/rnn_train_1540643021-69000000.meta')
         new_saver.restore(sess, author)
         x = my_txtutils.convert_from_alphabet(ord(queryText[0]))
         x = np.array([[x]])  # shape [BATCHSIZE, SEQLEN] with BATCHSIZE=1 and SEQLEN=1
@@ -58,7 +58,7 @@ def processingResponses(h, y, respAmt, sess, userFirstChar):
     rsps = []
     for iii in range(respAmt):
         ignoreResp, hh, yy = computeNextSeq(h, y, "*", sess, userFirstChar)
-        currResp, _, _ = computeNextSeq(hh, yy, "-", sess, userFirstChar)
+        currResp, _, _ = computeNextSeq(hh, yy, "#", sess, userFirstChar)
         #print("".join(ignoreResp))
         tmp = str("".join(currResp))
         if(tmp.startswith('S')):
@@ -77,7 +77,7 @@ def computeNextSeq(h, y, c, sess, userFirstChar):
         c = my_txtutils.sample_from_probabilities(yo, topn=2)
         y = np.array([[c]])  # shape [BATCHSIZE, SEQLEN] with BATCHSIZE=1 and SEQLEN=1
         c = chr(my_txtutils.convert_to_alphabet(c))
-        if(cc == '-' and c == userFirstChar):
+        if(cc == '#' and c == userFirstChar):
             #print(cc+c,end=cc)
             h = hh
             y = yy
